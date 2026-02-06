@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi San Valentín?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            background-color: #ffe6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #d63384;
+            text-align: center;
+        }
+
+        /* Corazones de fondo */
+        .heart {
+            position: absolute;
+            color: #ffb3c1;
+            font-size: 20px;
+            animation: float 5s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Pantallas */
+        .screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+        .active { display: flex; }
+
+        h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px white; }
+        p { font-size: 1.3rem; }
+        .blink { animation: blinker 1.5s linear infinite; font-size: 1rem; margin-top: 20px; color: #888; }
+
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        /* Botones */
+        .btn-container { margin-top: 20px; }
+        button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.1); background-color: #c9184a; }
+
+        .cat-img { width: 200px; border-radius: 20px; margin-bottom: 20px; }
+
+        /* Estilo Polaroid */
+        .polaroid-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transform: rotate(-3deg);
+            transition: all 0.3s;
+            animation: sway 3s ease-in-out infinite alternate;
+        }
+
+        .polaroid img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        .polaroid:nth-child(even) {
+            transform: rotate(3deg);
+            animation-delay: 0.5s;
+        }
+
+        .polaroid p {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.2rem;
+            margin: 10px 0 0 0;
+            color: #555;
+        }
+
+        @keyframes sway {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+    </style>
+</head>
+<body onclick="nextStep()" onkeydown="nextStep()">
+
+    <div id="step1" class="screen active">
+        <h1>¡San Valentín! ❤️</h1>
+        <p>"Prometo amarte incluso cuando tengas hambre... <br>y ya sabemos que eso es mucho decir."</p>
+        <div class="blink">Presiona cualquier tecla para continuar</div>
+    </div>
+
+    <div id="step2" class="screen">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZ3bmZqZzRocHZwZ2Z3ZzRocHZwZ2Z3ZzRocHZwZ2Z3ZzRocHZwJmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYV9pZCZjdD1n/c76IJLufpNwSULPk77/giphy.gif" alt="Gatito" class="cat-img">
+        <h2>¿Quieres ser mi San Valentín?</h2>
+        <div class="btn-container">
+            <button onclick="finalStep(event)">¡SÍ!</button>
+            <button onclick="finalStep(event)">¡ME ENCANTARÍA!</button>
+        </div>
+    </div>
+
+    <div id="step3" class="screen">
+        <h1>¡SABÍA QUE DIRÍAS QUE SÍ! 😍</h1>
+        <p>Gracias por ser la persona más especial...</p>
+        
+        <div class="polaroid-container">
+            <div class="polaroid">
+                <img src="URL_DE_TU_FOTO_1.jpg" alt="Nosotros 1">
+                <p>Nuestro inicio</p>
+            </div>
+            <div class="polaroid">
+                <img src="URL_DE_TU_FOTO_2.jpg" alt="Nosotros 2">
+                <p>Momentos locos</p>
+            </div>
+            <div class="polaroid">
+                <img src="URL_DE_TU_FOTO_3.jpg" alt="Nosotros 3">
+                <p>Por siempre</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generar corazones flotantes
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+
+        let currentStep = 1;
+
+        function nextStep() {
+            if (currentStep === 1) {
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+                currentStep = 2;
+            }
+        }
+
+        function finalStep(event) {
+            event.stopPropagation();
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            currentStep = 3;
+            
+            // Lluvia intensa de corazones
+            setInterval(createHeart, 80);
+        }
+    </script>
+</body>
+</html>
